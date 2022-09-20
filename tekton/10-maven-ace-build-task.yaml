@@ -12,20 +12,24 @@ spec:
       script: |
         #!/bin/sh
         cd /work
-        git clone "https://github.com/ot4i/ace-demo-pipeline"
+        git clone "https://github.com/ot4i/ace-demo-pipeline/"
       volumeMounts:
         - mountPath: /work
           name: work
     - name: maven-build
       image: $(params.dockerRegistry)/ace-minimal-build:12.0.4.0-alpine
+      imagePullPolicy: IfNotPresent
       script: |
         #!/bin/bash
         export LICENSE=accept
         . /opt/ibm/ace-12/server/bin/mqsiprofile
         export PATH=/opt/ibm/ace-12/common/jdk/bin:$PATH
+        export MQSI_REGISTRY=/tmp/perms-work-dir/config
+        mqsicreateworkdir /tmp/perms-work-dir
+        export MQSI_WORKPATH=$MQSI_REGISTRY
         mkdir /work/maven-output
         cd /work/ace-demo-pipeline
-        mvn --no-transfer-progress -Dinstall.work.directory=/work/maven-output/ace-server install
+        mvn --no-transfer-progress -Dmaven.repo.local=/work/maven-output -Dinstall.work.directory=/work/maven-output/ace-server install
       volumeMounts:
         - mountPath: /work
           name: work
@@ -36,6 +40,9 @@ spec:
         export LICENSE=accept
         . /opt/ibm/ace-12/server/bin/mqsiprofile
         export PATH=/opt/ibm/ace-12/common/jdk/bin:$PATH
+        export MQSI_REGISTRY=/tmp/perms-work-dir/config
+        mqsicreateworkdir /tmp/perms-work-dir
+        export MQSI_WORKPATH=$MQSI_REGISTRY
         # Slightly hacky, but quicker than building everything again!
         (cd /work/maven-output/ace-server/run && tar -cf - * ) | (cd /home/aceuser/ace-server/run && tar -xf - )
         # Set up credentials for the component tests; init-creds.sh looks in /tmp for policy
@@ -43,7 +50,7 @@ spec:
         bash /work/ace-demo-pipeline/demo-infrastructure/init-creds.sh
         # Build and run the tests
         cd /work/ace-demo-pipeline/TeaRESTApplication_ComponentTest
-        mvn --no-transfer-progress -Dct.work.directory=/home/aceuser/ace-server verify
+        mvn --no-transfer-progress -Dmaven.repo.local=/work/maven-output -Dct.work.directory=/home/aceuser/ace-server verify    
       volumeMounts:
         - mountPath: /work
           name: work
