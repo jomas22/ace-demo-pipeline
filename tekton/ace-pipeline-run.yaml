@@ -1,11 +1,15 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: ace-pipeline-run-1
+  name: ace-minimal-build-image-pipeline-run-1-alpha-push2int-imgbldreg
 spec:
-  serviceAccountName: ace-tekton-service-account
+  serviceAccountName: ace-tekton-service-account-alpha
   pipelineRef:
-    name: ace-pipeline
+    name: ace-minimal-build-image-pipeline
+  podTemplate:
+    securityContext:
+      runAsNonRoot: false
+      runAsUser: 0
   params:
     - name: dockerRegistry
-      value: "de.icr.io/ace-registry"
+      value: "image-registry.openshift-image-registry.svc:5000/image-registry"
