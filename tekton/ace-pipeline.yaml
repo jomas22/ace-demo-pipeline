@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: ace-pipeline
+  name: ace-pipeline-int-image-reg
 spec:
   params:
     - name: dockerRegistry
@@ -9,13 +9,13 @@ spec:
   tasks:
     - name: build-from-source
       taskRef:
-        name: maven-ace-build
+        name: maven-ace-build-int-image-reg
       params:
         - name: dockerRegistry
           value: $(params.dockerRegistry)
     - name: deploy-to-cluster
       taskRef:
-        name: deploy-to-cluster
+        name: deploy-to-cluster-int-image-reg
       params:
         - name: dockerRegistry
           value: $(params.dockerRegistry)
