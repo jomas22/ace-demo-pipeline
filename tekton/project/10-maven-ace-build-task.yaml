@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: maven-ace-build
+  name: maven-ace-build-int-image-reg
 spec:
   params:
     - name: dockerRegistry
@@ -50,6 +50,8 @@ spec:
         bash /work/ace-demo-pipeline/demo-infrastructure/init-creds.sh
         # Build and run the tests
         cd /work/ace-demo-pipeline/TeaRESTApplication_ComponentTest
+        whoami
+        id
         mvn --no-transfer-progress -Dmaven.repo.local=/work/maven-output -Dct.work.directory=/home/aceuser/ace-server verify    
       volumeMounts:
         - mountPath: /work
