@@ -2,8 +2,6 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: deploy-to-cluster-int-image-reg
-  labels:
-     app: manual
 spec:
   params:
     - name: dockerRegistry
@@ -15,6 +13,9 @@ spec:
         #!/bin/sh
         set -x
         cd /work
+		export MQSI_REGISTRY=/tmp/perms-work-dir/config
+        mqsicreateworkdir /tmp/perms-work-dir
+        export MQSI_WORKPATH=$MQSI_REGISTRY
         git clone "https://github.com/jomas22/ace-demo-pipeline"
         export REG_WITH_ESCAPED_SLASH=`echo $(params.dockerRegistry) | sed 's/\//\\\\\\//g'`
         echo $REG_WITH_ESCAPED_SLASH
@@ -35,11 +36,8 @@ spec:
           name: work
     - name: create-service
       image: lachlanevenson/k8s-kubectl
-      command: ["kubectl"]
-      args:
-        - "apply"
-        - "-f"
-        - "/work/ace-demo-pipeline/tekton/tea-tekton-service.yaml"
+      command: ["/bin/sh", "-c"]
+      args: [whoami;kubectl apply -f /work/ace-demo-pipeline/tekton/tea-tekton-service.yaml --v=6]
       volumeMounts:
         - mountPath: /work
           name: work
