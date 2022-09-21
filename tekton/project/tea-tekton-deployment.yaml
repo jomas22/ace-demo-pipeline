@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: tea-tekton
+  labels:
+     app: manual 
 spec:
   selector:
     matchLabels:
