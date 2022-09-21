@@ -6,9 +6,9 @@
 
 echo "Pulling in secrets"
 
-set +x
+set -x
 # [NM] added the below line to solve the "mkdir: can't create directory '/home/aceuser/ace-server/run/PreProdPolicies': Permission denied"
-# sudo chmod -R 777 /var/mqsi
+sudo chmod -R 777 /var/mqsi
 
 mkdir /home/aceuser/ace-server/run/PreProdPolicies
 echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:policyProjectDescriptor xmlns="http://com.ibm.etools.mft.descriptor.base" xmlns:ns2="http://com.ibm.etools.mft.descriptor.policyProject"><references/></ns2:policyProjectDescriptor>' > /home/aceuser/ace-server/run/PreProdPolicies/policy.descriptor
