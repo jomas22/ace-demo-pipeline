@@ -2,6 +2,8 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: deploy-to-cluster-int-image-reg
+  labels:
+     app: manual
 spec:
   params:
     - name: dockerRegistry
