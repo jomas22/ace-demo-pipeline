@@ -8,6 +8,7 @@ echo "Pulling in secrets"
 
 set +x
 # [NM] added the below line to solve the "mkdir: can't create directory '/home/aceuser/ace-server/run/PreProdPolicies': Permission denied"
+USER root
 chmod -R 777 /var/mqsi
 
 mkdir /home/aceuser/ace-server/run/PreProdPolicies
