@@ -23,15 +23,25 @@ spec:
           name: work
     - name: deploy-app
       image: lachlanevenson/k8s-kubectl
-      command: ["/bin/sh", "-c"]
-      args: [whoami;kubectl apply -f /work/ace-demo-pipeline/tekton/tea-tekton-deployment.yaml --v=6]
+      command: ["kubectl"]
+      args:
+        - "apply"
+        - "-f"
+        - "/work/ace-demo-pipeline/tekton/tea-tekton-deployment.yaml"
+      securityContext:
+        runAsUser: 0
       volumeMounts:
         - mountPath: /work
           name: work
     - name: create-service
       image: lachlanevenson/k8s-kubectl
-      command: ["/bin/sh", "-c"]
-      args: [whoami;kubectl apply -f /work/ace-demo-pipeline/tekton/tea-tekton-service.yaml --v=6]
+      command: ["kubectl"]
+      args:
+        - "apply"
+        - "-f"
+        - "/work/ace-demo-pipeline/tekton/tea-tekton-service.yaml"
+      securityContext:
+        runAsUser: 0
       volumeMounts:
         - mountPath: /work
           name: work
