@@ -16,6 +16,9 @@ spec:
         productID: eb5b5e73f62b4dcf8c434c6274a158a7
         productMetric: FREE
     spec:
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
       volumes:
       - name: secret-volume-2
         secret:
