@@ -20,13 +20,9 @@ spec:
       - name: secret-volume-2
         secret:
           secretName: jdbc-secret
-	  podTemplate:
-       securityContext:
-        runAsNonRoot: false
-        runAsUser: 0
       containers:
       - name: tea-tekton
-        image: image-registry.openshift-image-registry.svc:5000/image-registry/tea-tekton:latest
+        image: DOCKER_REGISTRY/tea-tekton:latest
         ports:
         - containerPort: 7800
         volumeMounts:
