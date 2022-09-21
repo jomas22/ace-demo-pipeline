@@ -13,7 +13,7 @@ spec:
         #!/bin/sh
         set -x
         cd /work
-	export MQSI_REGISTRY=/tmp/perms-work-dir/config
+        export MQSI_REGISTRY=/tmp/perms-work-dir/config
         mqsicreateworkdir /tmp/perms-work-dir
         export MQSI_WORKPATH=$MQSI_REGISTRY
         git clone "https://github.com/jomas22/ace-demo-pipeline"
